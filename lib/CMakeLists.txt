@@ -43,6 +43,8 @@ else ()
             )
 endif ()
 
+# memmem returns 32bit result on x64 platform
+add_definitions(-D_GNU_SOURCE)
 
 add_library(yolanda ${yolanda_lib})
 target_link_libraries(yolanda pthread)
