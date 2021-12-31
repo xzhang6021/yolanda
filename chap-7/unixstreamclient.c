@@ -3,16 +3,19 @@
 //
 #include "lib/common.h"
 
-int main(int argc, char **argv) {
-    if (argc != 2) {
+int main(int argc, char** argv)
+{
+    if (argc != 2)
+    {
         error(1, 0, "usage: unixstreamclient <local_path>");
     }
 
-    int sockfd;
+    int                sockfd;
     struct sockaddr_un servaddr;
 
     sockfd = socket(AF_LOCAL, SOCK_STREAM, 0);
-    if (sockfd < 0) {
+    if (sockfd < 0)
+    {
         error(1, errno, "create socket failed");
     }
 
@@ -20,7 +23,8 @@ int main(int argc, char **argv) {
     servaddr.sun_family = AF_LOCAL;
     strcpy(servaddr.sun_path, argv[1]);
 
-    if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
+    if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) < 0)
+    {
         error(1, errno, "connect failed");
     }
 
@@ -28,7 +32,8 @@ int main(int argc, char **argv) {
     bzero(send_line, MAXLINE);
     char recv_line[MAXLINE];
 
-    while (fgets(send_line, MAXLINE, stdin) != NULL) {
+    while (fgets(send_line, MAXLINE, stdin) != NULL)
+    {
 
         int nbytes = sizeof(send_line);
         if (write(sockfd, send_line, nbytes) != nbytes)

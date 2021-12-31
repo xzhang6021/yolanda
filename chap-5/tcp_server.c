@@ -1,11 +1,13 @@
 #include "lib/common.h"
 
-void read_data(int sockfd) {
+void read_data(int sockfd)
+{
     ssize_t n;
-    char buf[1024];
+    char    buf[1024];
 
     int time = 0;
-    for (;;) {
+    for (;;)
+    {
         fprintf(stdout, "block in read\n");
         if ((n = readn(sockfd, buf, 1024)) == 0)
             return;
@@ -16,10 +18,10 @@ void read_data(int sockfd) {
     }
 }
 
-
-int main(int argc, char **argv) {
-    int listenfd, connfd;
-    socklen_t clilen;
+int main(int argc, char** argv)
+{
+    int                listenfd, connfd;
+    socklen_t          clilen;
     struct sockaddr_in cliaddr, servaddr;
 
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -30,16 +32,16 @@ int main(int argc, char **argv) {
     servaddr.sin_port = htons(12345);
 
     /* bind到本地地址，端口为12345 */
-    bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
+    bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
     /* listen的backlog为1024 */
     listen(listenfd, 1024);
 
     /* 循环处理用户请求 */
-    for (;;) {
+    for (;;)
+    {
         clilen = sizeof(cliaddr);
-        connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
-        read_data(connfd);   /* 读取数据 */
-        close(connfd);          /* 关闭连接套接字，注意不是监听套接字*/
+        connfd = accept(listenfd, (struct sockaddr*)&cliaddr, &clilen);
+        read_data(connfd); /* 读取数据 */
+        close(connfd);     /* 关闭连接套接字，注意不是监听套接字*/
     }
 }
-

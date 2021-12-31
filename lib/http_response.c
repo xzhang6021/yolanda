@@ -3,8 +3,9 @@
 
 #define INIT_RESPONSE_HEADER_SIZE 128
 
-struct http_response *http_response_new() {
-    struct http_response *httpResponse = malloc(sizeof(struct http_response));
+struct http_response* http_response_new()
+{
+    struct http_response* httpResponse = malloc(sizeof(struct http_response));
     httpResponse->body = NULL;
     httpResponse->statusCode = Unknown;
     httpResponse->statusMessage = NULL;
@@ -14,23 +15,29 @@ struct http_response *http_response_new() {
     return httpResponse;
 }
 
-void http_response_encode_buffer(struct http_response *httpResponse, struct buffer *output) {
+void http_response_encode_buffer(struct http_response* httpResponse, struct buffer* output)
+{
     char buf[32];
     snprintf(buf, sizeof buf, "HTTP/1.1 %d ", httpResponse->statusCode);
     buffer_append_string(output, buf);
     buffer_append_string(output, httpResponse->statusMessage);
     buffer_append_string(output, "\r\n");
 
-    if (httpResponse->keep_connected) {
+    if (httpResponse->keep_connected)
+    {
         buffer_append_string(output, "Connection: close\r\n");
-    } else {
+    }
+    else
+    {
         snprintf(buf, sizeof buf, "Content-Length: %zd\r\n", strlen(httpResponse->body));
         buffer_append_string(output, buf);
         buffer_append_string(output, "Connection: Keep-Alive\r\n");
     }
 
-    if (httpResponse->response_headers != NULL && httpResponse->response_headers_number > 0) {
-        for (int i = 0; i < httpResponse->response_headers_number; i++) {
+    if (httpResponse->response_headers != NULL && httpResponse->response_headers_number > 0)
+    {
+        for (int i = 0; i < httpResponse->response_headers_number; i++)
+        {
             buffer_append_string(output, httpResponse->response_headers[i].key);
             buffer_append_string(output, ": ");
             buffer_append_string(output, httpResponse->response_headers[i].value);

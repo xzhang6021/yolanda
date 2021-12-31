@@ -2,16 +2,19 @@
 
 int another_shared = 0;
 
-void * thread_run(void *arg) {
-    int *calculator = (int *) arg;
+void* thread_run(void* arg)
+{
+    int* calculator = (int*)arg;
     printf("hello, world, tid == %d \n", pthread_self());
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 1000; i++)
+    {
         *calculator += 1;
         another_shared += 1;
     }
 }
 
-int main(int c, char **v) {
+int main(int c, char** v)
+{
     int calculator;
 
     pthread_t tid1;

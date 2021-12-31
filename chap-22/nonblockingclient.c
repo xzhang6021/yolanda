@@ -1,13 +1,14 @@
 #include "lib/common.h"
 
-#define    MAXLINE     4096
-#define    KEEP_ALIVE_TIME  10
-#define    KEEP_ALIVE_INTERVAL  3
-#define    KEEP_ALIVE_PROBETIMES  3
+#define MAXLINE 4096
+#define KEEP_ALIVE_TIME 10
+#define KEEP_ALIVE_INTERVAL 3
+#define KEEP_ALIVE_PROBETIMES 3
 
-
-int main(int argc, char **argv) {
-    if (argc != 2) {
+int main(int argc, char** argv)
+{
+    if (argc != 2)
+    {
         error(1, 0, "usage: nonblockingclient <IPaddress>");
     }
 
@@ -21,8 +22,9 @@ int main(int argc, char **argv) {
     inet_pton(AF_INET, argv[1], &server_addr.sin_addr);
 
     socklen_t server_len = sizeof(server_addr);
-    int connect_rt = connect(socket_fd, (struct sockaddr *) &server_addr, server_len);
-    if (connect_rt < 0) {
+    int       connect_rt = connect(socket_fd, (struct sockaddr*)&server_addr, server_len);
+    if (connect_rt < 0)
+    {
         error(1, errno, "connect failed ");
     }
 
@@ -34,4 +36,3 @@ int main(int argc, char **argv) {
 
     exit(0);
 }
-

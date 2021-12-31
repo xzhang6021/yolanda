@@ -1,8 +1,9 @@
-#include <assert.h>
 #include "acceptor.h"
+#include <assert.h>
 
-struct acceptor *acceptor_init(int port) {
-    struct acceptor *acceptor1 = malloc(sizeof(struct acceptor));
+struct acceptor* acceptor_init(int port)
+{
+    struct acceptor* acceptor1 = malloc(sizeof(struct acceptor));
     acceptor1->listen_port = port;
     acceptor1->listen_fd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -17,17 +18,19 @@ struct acceptor *acceptor_init(int port) {
     int on = 1;
     setsockopt(acceptor1->listen_fd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
 
-    int rt1 = bind(acceptor1->listen_fd, (struct sockaddr *) &server_addr, sizeof(server_addr));
-    if (rt1 < 0) {
+    int rt1 = bind(acceptor1->listen_fd, (struct sockaddr*)&server_addr, sizeof(server_addr));
+    if (rt1 < 0)
+    {
         error(1, errno, "bind failed ");
     }
 
     int rt2 = listen(acceptor1->listen_fd, LISTENQ);
-    if (rt2 < 0) {
+    if (rt2 < 0)
+    {
         error(1, errno, "listen failed ");
     }
 
-//    signal(SIGPIPE, SIG_IGN);
+    //    signal(SIGPIPE, SIG_IGN);
 
     return acceptor1;
 }

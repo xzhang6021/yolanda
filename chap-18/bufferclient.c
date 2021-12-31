@@ -1,7 +1,9 @@
 #include "lib/common.h"
 
-int main(int argc, char **argv) {
-    if (argc != 2) {
+int main(int argc, char** argv)
+{
+    if (argc != 2)
+    {
         error(1, 0, "usage: tcpclient <IPaddress>");
     }
 
@@ -15,21 +17,20 @@ int main(int argc, char **argv) {
     inet_pton(AF_INET, argv[1], &server_addr.sin_addr);
 
     socklen_t server_len = sizeof(server_addr);
-    int connect_rt = connect(socket_fd, (struct sockaddr *) &server_addr, server_len);
-    if (connect_rt < 0) {
+    int       connect_rt = connect(socket_fd, (struct sockaddr*)&server_addr, server_len);
+    if (connect_rt < 0)
+    {
         error(1, errno, "connect failed ");
     }
 
-
     char buf[12];
-    int n;
+    int  n;
 
-    while (fgets(buf, sizeof(buf), stdin) != NULL) {
+    while (fgets(buf, sizeof(buf), stdin) != NULL)
+    {
         n = strlen(buf);
-        if (send(socket_fd, (char *) &buf, n, 0) < 0)
+        if (send(socket_fd, (char*)&buf, n, 0) < 0)
             error(1, errno, "send failure");
-
     }
     exit(0);
 }
-

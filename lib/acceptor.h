@@ -3,12 +3,12 @@
 
 #include "common.h"
 
-struct acceptor{
+struct acceptor
+{
     int listen_port;
     int listen_fd;
-} ;
+};
 
-struct acceptor *acceptor_init(int port);
-
+struct acceptor* acceptor_init(int port);
 
 #endif

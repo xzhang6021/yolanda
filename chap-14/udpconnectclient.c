@@ -3,10 +3,12 @@
 //
 #include "lib/common.h"
 
-#define    MAXLINE     4096
+#define MAXLINE 4096
 
-int main(int argc, char **argv) {
-    if (argc != 2) {
+int main(int argc, char** argv)
+{
+    if (argc != 2)
+    {
         error(1, 0, "usage: udpclient1 <IPaddress>");
     }
 
@@ -21,26 +23,30 @@ int main(int argc, char **argv) {
 
     socklen_t server_len = sizeof(server_addr);
 
-    if (connect(socket_fd, (struct sockaddr *) &server_addr, server_len)) {
+    if (connect(socket_fd, (struct sockaddr*)&server_addr, server_len))
+    {
         error(1, errno, "connect failed");
     }
 
-    struct sockaddr *reply_addr;
+    struct sockaddr* reply_addr;
     reply_addr = malloc(server_len);
 
-    char send_line[MAXLINE], recv_line[MAXLINE + 1];
+    char      send_line[MAXLINE], recv_line[MAXLINE + 1];
     socklen_t len;
-    int n;
+    int       n;
 
-    while (fgets(send_line, MAXLINE, stdin) != NULL) {
+    while (fgets(send_line, MAXLINE, stdin) != NULL)
+    {
         int i = strlen(send_line);
-        if (send_line[i - 1] == '\n') {
+        if (send_line[i - 1] == '\n')
+        {
             send_line[i - 1] = 0;
         }
 
         printf("now sending %s\n", send_line);
-        size_t rt = sendto(socket_fd, send_line, strlen(send_line), 0, (struct sockaddr *) &server_addr, server_len);
-        if (rt < 0) {
+        size_t rt = sendto(socket_fd, send_line, strlen(send_line), 0, (struct sockaddr*)&server_addr, server_len);
+        if (rt < 0)
+        {
             error(1, errno, "sendto failed");
         }
         printf("send bytes: %zu \n", rt);
@@ -53,10 +59,7 @@ int main(int argc, char **argv) {
         recv_line[n] = 0;
         fputs(recv_line, stdout);
         fputs("\n", stdout);
-
     }
 
     exit(0);
 }
-
-

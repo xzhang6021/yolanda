@@ -2,16 +2,15 @@
 // Created by shengym on 2019-07-07.
 //
 
-#include    "common.h"
-#include    <stdarg.h>        /* ANSI C header file */
-#include    <syslog.h>        /* for syslog() */
+#include "common.h"
+#include <stdarg.h> /* ANSI C header file */
+#include <syslog.h> /* for syslog() */
 
-
-# define MAXLINE 4096
-
+#define MAXLINE 4096
 
 /* error - print a diagnostic and optionally exit */
-void error(int status, int err, char *fmt, ...) {
+void error(int status, int err, char* fmt, ...)
+{
     va_list ap;
 
     va_start(ap, fmt);
@@ -23,31 +22,29 @@ void error(int status, int err, char *fmt, ...) {
         exit(status);
 }
 
-
-static void
-err_doit(int errnoflag, int level, const char *fmt, va_list ap) {
-    int errno_save, n;
+static void err_doit(int errnoflag, int level, const char* fmt, va_list ap)
+{
+    int  errno_save, n;
     char buf[MAXLINE + 1];
 
-    errno_save = errno;        /* value caller might want printed */
+    errno_save = errno; /* value caller might want printed */
 
-    vsnprintf(buf, MAXLINE, fmt, ap);    /* safe */
+    vsnprintf(buf, MAXLINE, fmt, ap); /* safe */
 
     n = strlen(buf);
     if (errnoflag)
         snprintf(buf + n, MAXLINE - n, ": %s", strerror(errno_save));
     strcat(buf, "\n");
 
-
-    fflush(stdout);        /* in case stdout and stderr are the same */
+    fflush(stdout); /* in case stdout and stderr are the same */
     fputs(buf, stderr);
     fflush(stderr);
 
     return;
 }
 
-//void
-//err_quit(const char *fmt, ...) {
+// void
+// err_quit(const char *fmt, ...) {
 //    va_list ap;
 //
 //    va_start(ap, fmt);
@@ -56,32 +53,33 @@ err_doit(int errnoflag, int level, const char *fmt, va_list ap) {
 //    exit(1);
 //}
 
-void yolanda_log(int severity, const char *msg) {
-    const char *severity_str;
-    switch (severity) {
-        case LOG_DEBUG_TYPE:
-            severity_str = "debug";
-            break;
-        case LOG_MSG_TYPE:
-            severity_str = "msg";
-            break;
-        case LOG_WARN_TYPE:
-            severity_str = "warn";
-            break;
-        case LOG_ERR_TYPE:
-            severity_str = "err";
-            break;
-        default:
-            severity_str = "???";
-            break;
+void yolanda_log(int severity, const char* msg)
+{
+    const char* severity_str;
+    switch (severity)
+    {
+    case LOG_DEBUG_TYPE:
+        severity_str = "debug";
+        break;
+    case LOG_MSG_TYPE:
+        severity_str = "msg";
+        break;
+    case LOG_WARN_TYPE:
+        severity_str = "warn";
+        break;
+    case LOG_ERR_TYPE:
+        severity_str = "err";
+        break;
+    default:
+        severity_str = "???";
+        break;
     }
-    (void) fprintf(stdout, "[%s] %s\n", severity_str, msg);
-
+    (void)fprintf(stdout, "[%s] %s\n", severity_str, msg);
 }
 
-void yolanda_logx(int severity, const char *errstr, const char *fmt, va_list ap)
+void yolanda_logx(int severity, const char* errstr, const char* fmt, va_list ap)
 {
-    char buf[1024];
+    char   buf[1024];
     size_t len;
 
     if (fmt != NULL)
@@ -89,9 +87,11 @@ void yolanda_logx(int severity, const char *errstr, const char *fmt, va_list ap)
     else
         buf[0] = '\0';
 
-    if (errstr) {
+    if (errstr)
+    {
         len = strlen(buf);
-        if (len < sizeof(buf) - 3) {
+        if (len < sizeof(buf) - 3)
+        {
             snprintf(buf + len, sizeof(buf) - len, ": %s", errstr);
         }
     }
@@ -99,7 +99,7 @@ void yolanda_logx(int severity, const char *errstr, const char *fmt, va_list ap)
     yolanda_log(severity, buf);
 }
 
-void yolanda_msgx(const char *fmt, ...)
+void yolanda_msgx(const char* fmt, ...)
 {
     va_list ap;
 
@@ -108,7 +108,7 @@ void yolanda_msgx(const char *fmt, ...)
     va_end(ap);
 }
 
-void yolanda_debugx(const char *fmt, ...)
+void yolanda_debugx(const char* fmt, ...)
 {
     va_list ap;
 

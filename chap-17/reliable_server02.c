@@ -4,19 +4,23 @@
 
 #include "lib/common.h"
 
-
-int main(int argc, char **argv) {
-    int connfd;
+int main(int argc, char** argv)
+{
+    int  connfd;
     char buf[1024];
-    int time = 0;
+    int  time = 0;
 
     connfd = tcp_server(SERV_PORT);
 
-    while (1) {
+    while (1)
+    {
         int n = read(connfd, buf, 1024);
-        if (n < 0) {
+        if (n < 0)
+        {
             error(1, errno, "error read");
-        } else if (n == 0) {
+        }
+        else if (n == 0)
+        {
             error(1, 0, "client closed \n");
         }
 
@@ -26,7 +30,4 @@ int main(int argc, char **argv) {
     }
 
     exit(0);
-
 }
-
-
